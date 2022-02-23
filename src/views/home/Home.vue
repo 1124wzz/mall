@@ -1,15 +1,20 @@
 <template>
-  <div id="home">
-    <nav-bar class="home-bar">
-      <div slot="center">购物街</div>
-    </nav-bar>
-    <home-swiper :banner="banner"/>
-    <recommend-view :recommend="recommend"/>
-    <feature-view/>
-    <tab-control :title="['流行', '新款', '精选']"
-                 class="tab-control"
-                 @tabClick="tabClick"/>
-    <goods-list :goods="goods[currentType].list"/>
+  <div id="home"><nav-bar class="home-bar"><div slot="center">购物街</div></nav-bar>
+    <!-- 加入ref属性，下面拿的时候可以拿到之歌组件 -->
+    <scroll class="content" ref="scroll" 
+                            :probe-type="3" 
+                            @scroll="contentScroll" 
+                            :pull-up-load="true" @pulling="loadMore">
+      <home-swiper :banner="banner"/>
+      <recommend-view :recommend="recommend"/>
+      <feature-view/>
+      <tab-control :title="['流行', '新款', '精选']"
+                   class="tab-control"
+                   @tabClick="tabClick"/>
+      <goods-list :goods="goods[currentType].list"/>
+    </scroll>
+
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -20,6 +25,8 @@ import recommendView from "@/views/home/childComponents/RecommendView";
 import FeatureView from "@/views/home/childComponents/FeatureView";
 import TabControl from "@/components/common/tabControl/TabControl";
 import GoodsList from "@/components/content/Goods/GoodsList";
+import Scroll from "@/components/common/Scroll/Scroll";
+import BackTop from '@/components/content/BackTop/BackTop'
 
 import { getHomeData, getHomeGoods} from "@/network/home";
 
@@ -32,7 +39,9 @@ export default {
     recommendView,
     FeatureView,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -43,7 +52,8 @@ export default {
         'new': { page: 0, list: []},
         'sell': { page: 0, list: []},
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShowBackTop: false
     }
   },
   created() {
@@ -66,7 +76,8 @@ export default {
       getHomeGoods(type,page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page +=1
-        console.log(res);
+
+        this.$refs.scroll.finshPullUp()
       })
     },
     tabClick(index) {
@@ -81,6 +92,15 @@ export default {
           this.currentType = 'sell'
           break
       }
+    },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
+    contentScroll(position) {
+      this.isShowBackTop = (-position.y) > 1000
+    },
+    loadMore() {
+      this.getHomeGoods(this.currentType)
     }
   }
 }
@@ -88,7 +108,8 @@ export default {
 
 <style scoped>
   #home {
-    padding-top: 44px;
+    height: 100vh;
+    position: relative;
   }
   .home-bar {
     background-color: var(--color-tint);
@@ -98,6 +119,14 @@ export default {
     right: 0;
     top: 0;
     z-index: 9;
+  }
+  .content {
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
   .tab-control {
     position: sticky;
