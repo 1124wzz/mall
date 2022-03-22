@@ -13,12 +13,16 @@
       <p>全部宝贝</p>
     </div>
     <div class="shopTable">
-      <table class="">
+      <table>
         <tr v-for="item in shop.score">
           <td>{{item.name}}</td>
-          <td>{{ item.score }}</td>
+          <td :class="{active: item.isBetter}" class="green">{{ item.score }}</td>
+          <td :class="{active: item.isBetter}" class="green">{{ item.isBetter? '高' : '低'}}</td>
         </tr>
       </table>
+    </div>
+    <div class="shops">
+      进店逛逛
     </div>
   </div>
 </template>
@@ -34,6 +38,11 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      text_content: ''
+    }
+  },
   filters: {
     cell(value) {
       let result = value
@@ -42,7 +51,8 @@ export default {
         return result
       }
     }
-  }
+  },
+  computed: {}
 }
 </script>
 
@@ -96,14 +106,32 @@ export default {
 }
 .shopTable table {
   position: absolute;
-  top: 82px;
-  right: 37px;
+  top: 86px;
+  right: 40px;
+  border-left: 1px solid #cccccc;
 }
 .shopTable table td {
-  width: 80px;
   height: 25px;
+  padding-left: 10px;
 }
 .detail-shop-info {
-  border-top: 2px solid #cccccc;
+  border-top: 2px solid #f2f5f8;
+}
+.active {
+  color: red!important;
+}
+.green {
+  color: green;
+}
+.shops {
+  margin-top: 188px;
+  margin-left: 152px;
+  width: 120px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #f2f5f8;
 }
 </style>
