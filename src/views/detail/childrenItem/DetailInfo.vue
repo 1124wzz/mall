@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="Object.keys(detailInfo).length !== 0">
     <div class="desc-info">{{ detailInfo.desc }}</div>
     <div class="key-info">{{ detailInfo.detailImage[0].key}}</div>
     <div class="image-info">

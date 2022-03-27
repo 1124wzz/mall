@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     itemClick(index) {
+      this.$emit("backClick", index)
       this.currentIndex = index
     },
     backClick() {

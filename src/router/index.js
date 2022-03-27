@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 const  Home = () => import('views/home/Home.vue')
 const  CateGroy = () => import('views/catgroy/Categroy.vue')
-const  ShopCart = () => import('views/shotcart/Cart.vue')
+const  ShopCart = () => import('views/shopcart/Cart.vue')
 const  Profile = () => import('views/profile/Profile.vue')
 const Detail = () => import('views/detail/Detail.vue')
 

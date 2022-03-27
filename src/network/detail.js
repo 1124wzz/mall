@@ -10,6 +10,7 @@ export function getDetail(iid) {
   })
 }
 
+
 export function getRecommend() {
   return axios({
     url: '/recommend'

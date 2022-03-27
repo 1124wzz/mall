@@ -24,7 +24,7 @@
         ref="tabControl2"/>
       <goods-list :goods="goods[currentType].list" />
     </scroll>
-    <back-top @click.native="backClick" v-show="isShowBackTop" />
+    <back-top @click.native="backTopClick" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -36,10 +36,9 @@ import FeatureView from "views/home/childComponents/FeatureView";
 import TabControl from "components/common/tabControl/TabControl";
 import GoodsList from "components/content/Goods/GoodsList";
 import Scroll from "components/common/Scroll/Scroll";
-import BackTop from "components/content/BackTop/BackTop";
 
 import { getHomeData, getHomeGoods } from "network/home";
-import { debounce } from "common/tools.js";
+import { minxin, backTop } from "@/common/minxin";
 
 export default {
   name: "Home",
@@ -51,7 +50,6 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
   },
   data() {
     return {
@@ -63,7 +61,6 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
-      isShowBackTop: false,
       tabOffsetTop: 0,
       isFixed: false,
       saveY: 0,
@@ -109,12 +106,9 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0);
-    },
     contentScroll(position) {
-      this.isShowBackTop = -position.y > 1000;
       this.isFixed = -position.y > this.tabOffsetTop;
+      this.demo(position)
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
@@ -122,15 +116,10 @@ export default {
     SwiperimgLoad() {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
+
   },
-  mounted() {
-    // 3. 监听图片加载
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    this.$bus.$on("imgLoad", () => {
-      // 调用refresh() 方法重新计算scollerHeight
-      refresh();
-    });
-  },
+  mixins: [minxin, backTop],
+  mounted() {},
   activated() {
     // 第二次点进去把离开的位置赋值，回到我们离开的位置
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
@@ -138,6 +127,8 @@ export default {
   deactivated() {
     // 离开首页的时候保存滚动的位置
     this.saveY = this.$refs.scroll.scroll.y;
+
+    this.$bus.$off('imgLoad', this.itemImgLoad)
   },
 };
 </script>

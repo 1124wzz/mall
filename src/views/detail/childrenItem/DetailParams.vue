@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-params">
+  <div class="detail-params" v-if="Object.keys(goodsParams).length !== 0">
     <table class="table-size" v-for="(item, index) in goodsParams.size" :key="index">
       <tr v-for="(tr, indey) in item" :key="indey">
         <td v-for="(td, indez) in tr" :key="indez">{{ td }}</td>

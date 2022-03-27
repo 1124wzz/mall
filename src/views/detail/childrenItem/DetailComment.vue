@@ -18,7 +18,7 @@
         <span>{{comment.style}}</span>
       </div>
       <div class="info-imgs">
-        <img :src="item" v-for="(item, index) in comment.images" :key="index">
+        <img :src="item" v-for="(item, index) in comment.images" :key="index" alt="">
       </div>
     </div>
   </div>
