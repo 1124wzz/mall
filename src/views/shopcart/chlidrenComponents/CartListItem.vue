@@ -1,7 +1,7 @@
 <template>
   <div class="cart-list-item">
     <div class="check-button" @click="checkClick">
-      <check-button :class="{check: isCheck}" />
+      <check-button :class="{ check: isCheck }" />
     </div>
     <div class="cart-left">
       <img :src="cartProduct.image" alt="">
@@ -27,11 +27,11 @@ export default {
       default() {
         return {}
       }
-    }
+    },
   },
   data() {
     return {
-      isCheck: false
+      isCheck: this.cartProduct.checked
     }
   },
   components: {
