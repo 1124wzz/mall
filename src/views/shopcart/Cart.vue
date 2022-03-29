@@ -1,9 +1,11 @@
 <template>
   <div id="cart">
     <nav-bar class="cart-nav"><div slot="center">购物车({{length}})</div></nav-bar>
-    <scroll class="content" :pull-up-load="true" ref="scroll">
+    <scroll class="content clear-fix" :pull-up-load="true" ref="scroll">
       <cart-list/>
     </scroll>
+
+    <cart-bottom-bar/>
   </div>
 </template>
 
@@ -12,6 +14,7 @@
 import navBar from "@/components/common/nav-bar/NavBar";
 import cartList from "@/views/shopcart/chlidrenComponents/CartList";
 import Scroll from "@/components/common/Scroll/Scroll";
+import CartBottomBar from "@/views/shopcart/chlidrenComponents/CartBottomBar";
 import { mapGetters } from "vuex";
 
 export default {
@@ -24,7 +27,8 @@ export default {
   components: {
     navBar,
     cartList,
-    Scroll
+    Scroll,
+    CartBottomBar
   },
   activated() {
     this.$refs.scroll.refresh()
@@ -33,13 +37,17 @@ export default {
     ...mapGetters({
       length: 'cartLength'
     })
+  },
+  methods: {
+
   }
+
 }
 </script>
 
 <style scoped>
   #cart {
-    height: 100vh;
+    height: 96vh;
     position: relative;
     background-color: #fff;
   }

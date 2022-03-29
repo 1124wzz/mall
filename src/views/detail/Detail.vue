@@ -32,6 +32,8 @@ import { minxin, backTop } from "@/common/minxin";
 import {debounce} from "@/common/tools";
 import DetailBottomBar from "@/views/detail/childrenItem/DetailBottomBar";
 
+import Toast from "@/components/common/toast/Toast";
+
 export default {
   name: "Detail",
   data() {
@@ -46,7 +48,7 @@ export default {
       comment: {},
       topYs: [],
       topLoad: null,
-      currentIndex: 0
+      currentIndex: 0,
     };
   },
   components: {
@@ -59,7 +61,8 @@ export default {
     DetailParams,
     GoodsList,
     DetailComment,
-    DetailBottomBar
+    DetailBottomBar,
+    Toast
   },
   mixins: [minxin, backTop],
   created() {
@@ -126,7 +129,9 @@ export default {
       product.iid = this.iid
 
       // this.$store.commit('addToCart', product)
-      this.$store.dispatch('addToCart', product)
+      this.$store.dispatch('addToCart', product).then(res => {
+        this.$toast.show(res,1500)
+      })
     }
   },
   destroyed() {
