@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const  Home = () => import('views/home/Home.vue')
-const  CateGroy = () => import('views/catgroy/Categroy.vue')
+const  CateGroy = () => import('views/category/Category.vue')
 const  ShopCart = () => import('views/shopcart/Cart.vue')
 const  Profile = () => import('views/profile/Profile.vue')
 const Detail = () => import('views/detail/Detail.vue')
